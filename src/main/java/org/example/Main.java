@@ -9,9 +9,9 @@ public class Main {
         String peopleText = """
                 Flinstone, Fred, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
                 Flinstone2, Fred2, 1/1/1900, Programmer, {locpd=1300,yoe=14,iq=100}
-                Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2000,yoe=8,iq=105}
-                Flinston4, Fred4, 1/1/1900, Programmer, {locpd=2000,yoe=3,iq=115}
-                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=100}
+                Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2300,yoe=8,iq=105}
+                Flinston4, Fred4, 1/1/1900, Programmer, {locpd=1630,yoe=3,iq=115}
+                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}
                 Rubble, Barney, 2/2/1905, Manager, {orgSize=300,dr=10}
                 Rubble2, Barney2, 2/2/1905, Manager, {orgSize=100,dr=4}
                 Rubble3, Barney3, 2/2/1905, Manager, {orgSize=200,dr=2}
@@ -30,10 +30,10 @@ public class Main {
         Pattern peoplePat = Pattern.compile(peopleRegex);
         Matcher peopleMat = peoplePat.matcher(peopleText);
 
-        String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w)";
+        String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w+)";
         Pattern coderPat = Pattern.compile(progRegex);
 
-        String managerRegex = "\\w+=(?<org>\\w+),\\w+=(?<dr>\\w)";
+        String managerRegex = "\\w+=(?<org>\\w+),\\w+=(?<dr>\\w+)";
         Pattern managerPat = Pattern.compile(managerRegex);
 
         String analystRegex = "\\w+=(?<projectCount>\\w+)";
@@ -55,11 +55,14 @@ public class Main {
                         int locpd = Integer.parseInt(coderMat.group("locpd"));
                         int yoe = Integer.parseInt(coderMat.group("yoe"));
                         int iq = Integer.parseInt(coderMat.group("iq"));
-                        System.out.printf("Programmer loc: %S yoe:%S iq: %s%n", locpd, yoe, iq);
+                     //   System.out.printf("Programmer loc: %S yoe:%S iq: %s%n", locpd, yoe, iq);
                         salary = 3000 + locpd * yoe * iq;
                     } else {
                         salary = 3000;
                     }
+                    String lastName = peopleMat.group("lastName");
+                    String firstName = peopleMat.group("firstName");
+                    System.out.printf("%s, %s: %s%n",lastName,firstName,NumberFormat.getCurrencyInstance().format(salary));
                     yield salary;
                 }
 
@@ -69,11 +72,14 @@ public class Main {
                     if (managerMat.find()) {
                         int org = Integer.parseInt(managerMat.group("org"));
                         int dr = Integer.parseInt(managerMat.group("dr"));
-                        System.out.printf("Manager orgSize: %S dr: %s%n", org, dr);
+                   //     System.out.printf("Manager orgSize: %S dr: %s%n", org, dr);
                         salary = 3500 + org * dr;
                     } else {
                         salary = 3500;
                     }
+                    String lastName = peopleMat.group("lastName");
+                    String firstName = peopleMat.group("firstName");
+                    System.out.printf("%s, %s: %s%n",lastName,firstName,NumberFormat.getCurrencyInstance().format(salary));
                     yield salary;
                 }
 
@@ -82,11 +88,15 @@ public class Main {
                     Matcher analystMat = analystPat.matcher(details);
                     if (analystMat.find()) {
                         int projectCount = Integer.parseInt(analystMat.group("projectCount"));
-                        salary = 2500 + projectCount;
+                  //      System.out.printf("Manager orgSize: %s%n", projectCount);
+                        salary = 2500 + projectCount * 2;
 
                     } else {
                         salary = 2500;
                     }
+                    String lastName = peopleMat.group("lastName");
+                    String firstName = peopleMat.group("firstName");
+                    System.out.printf("%s, %s: %s%n",lastName,firstName,NumberFormat.getCurrencyInstance().format(salary));
                     yield salary;
                 }
 
@@ -95,10 +105,14 @@ public class Main {
                     Matcher CEOMat = CEOPat.matcher(details);
                     if (CEOMat.find()) {
                         int avgStockPrice = Integer.parseInt(CEOMat.group("avgStockPrice"));
-                        salary = 5000 + avgStockPrice;
+                    //    System.out.printf("CEO avgStockPrice: %s%n", avgStockPrice);
+                        salary = 5000 * avgStockPrice;
                     } else {
                         salary = 5000;
                     }
+                    String lastName = peopleMat.group("lastName");
+                    String firstName = peopleMat.group("firstName");
+                    System.out.printf("%s, %s: %s%n",lastName,firstName,NumberFormat.getCurrencyInstance().format(salary));
                     yield salary;
                 }
 
@@ -106,6 +120,6 @@ public class Main {
             };
         }
         NumberFormat currencyInstant = NumberFormat.getCurrencyInstance();
-        System.out.printf("The total payout should be %S%n", currencyInstant.format(totalSalaries));
+        System.out.printf("The total payout should be %s%n", currencyInstant.format(totalSalaries));
     }
 }
