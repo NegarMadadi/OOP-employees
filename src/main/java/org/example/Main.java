@@ -8,15 +8,15 @@ public class Main {
     public static void main(String[] args) {
         String peopleText = """
                 Flinstone, Fred, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Flinstone2, Fred2, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Flinston4, Fred4, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Rubble, Barney, 2/2/1905, Manager, {orgSize=2000,dr=10}
-                Rubble2, Barney2, 2/2/1905, Manager, {orgSize=2000,dr=4}
-                Rubble3, Barney3, 2/2/1905, Manager, {orgSize=2000,dr=2}
-                Rubble4, Barney4, 2/2/1905, Manager, {orgSize=2000,dr=8}
-                Rubble5, Barney5, 2/2/1905, Manager, {orgSize=2000,dr=20}
+                Flinstone2, Fred2, 1/1/1900, Programmer, {locpd=1300,yoe=14,iq=100}
+                Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2000,yoe=8,iq=105}
+                Flinston4, Fred4, 1/1/1900, Programmer, {locpd=2000,yoe=3,iq=115}
+                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=100}
+                Rubble, Barney, 2/2/1905, Manager, {orgSize=300,dr=10}
+                Rubble2, Barney2, 2/2/1905, Manager, {orgSize=100,dr=4}
+                Rubble3, Barney3, 2/2/1905, Manager, {orgSize=200,dr=2}
+                Rubble4, Barney4, 2/2/1905, Manager, {orgSize=500,dr=8}
+                Rubble5, Barney5, 2/2/1905, Manager, {orgSize=175,dr=20}
                 Flinstone, Wilma, 3/3/1910, Analyst, {projectCount=3}
                 Flinstone, Wilma2, 3/3/1910, Analyst, {projectCount=4}
                 Flinstone, Wilma3, 3/3/1910, Analyst, {projectCount=5}
@@ -25,25 +25,32 @@ public class Main {
                 Rubble, Betty, 4/4/1915, CEO, {avgStockPrice=300}
                 """;
 
-        String managerRegex = "\\w+=(?<org>\\w),\\w+=(?<dr>\\w)";
-        String analystRegex = "\\w+=(?<projectCount>\\w))";
-        String CEORegex = "\\w+=(?<avgStockPrice>\\w)";
 
         String peopleRegex = "(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s(?<role>\\w+)(?:,\\s*\\{(?<details>.*)\\})?\\n";
         Pattern peoplePat = Pattern.compile(peopleRegex);
         Matcher peopleMat = peoplePat.matcher(peopleText);
 
         String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w)";
-
         Pattern coderPat = Pattern.compile(progRegex);
 
+        String managerRegex = "\\w+=(?<org>\\w+),\\w+=(?<dr>\\w)";
+        Pattern managerPat = Pattern.compile(managerRegex);
+
+        String analystRegex = "\\w+=(?<projectCount>\\w+)";
+        Pattern analystPat = Pattern.compile(analystRegex);
+
+        String CEORegex = "\\w+=(?<avgStockPrice>\\w+)";
+        Pattern CEOPat = Pattern.compile(CEORegex);
+
         int totalSalaries = 0;
+        int salary = 0;
+
+
         while (peopleMat.find()) {
             totalSalaries += switch (peopleMat.group("role")) {
                 case "Programmer" -> {
                     String details = peopleMat.group("details");
                     Matcher coderMat = coderPat.matcher(details);
-                    int salary = 0;
                     if (coderMat.find()) {
                         int locpd = Integer.parseInt(coderMat.group("locpd"));
                         int yoe = Integer.parseInt(coderMat.group("yoe"));
@@ -55,15 +62,46 @@ public class Main {
                     }
                     yield salary;
                 }
+
                 case "Manager" -> {
-                    yield 3500;
+                    String details = peopleMat.group("details");
+                    Matcher managerMat = managerPat.matcher(details);
+                    if (managerMat.find()) {
+                        int org = Integer.parseInt(managerMat.group("org"));
+                        int dr = Integer.parseInt(managerMat.group("dr"));
+                        System.out.printf("Manager orgSize: %S dr: %s%n", org, dr);
+                        salary = 3500 + org * dr;
+                    } else {
+                        salary = 3500;
+                    }
+                    yield salary;
                 }
+
                 case "Analyst" -> {
-                    yield 2500;
+                    String details = peopleMat.group("details");
+                    Matcher analystMat = analystPat.matcher(details);
+                    if (analystMat.find()) {
+                        int projectCount = Integer.parseInt(analystMat.group("projectCount"));
+                        salary = 2500 + projectCount;
+
+                    } else {
+                        salary = 2500;
+                    }
+                    yield salary;
                 }
+
                 case "CEO" -> {
-                    yield 5000;
+                    String details = peopleMat.group("details");
+                    Matcher CEOMat = CEOPat.matcher(details);
+                    if (CEOMat.find()) {
+                        int avgStockPrice = Integer.parseInt(CEOMat.group("avgStockPrice"));
+                        salary = 5000 + avgStockPrice;
+                    } else {
+                        salary = 5000;
+                    }
+                    yield salary;
                 }
+
                 default -> 0;
             };
         }
