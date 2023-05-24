@@ -13,16 +13,13 @@ public class Programmer {
     private int linesOfCOde = 0;
     private int yearsOfExperience = 0;
     private int iq = 0;
-    private int salary;
 
     private final String peopleRegex = "(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s(?<role>\\w+)(?:,\\s*\\{(?<details>.*)\\})?\\n";
     private final Pattern peoplePat = Pattern.compile(peopleRegex);
-
     private final String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w+)";
     private final Pattern progPat = Pattern.compile(progRegex);
     private final NumberFormat moneyFormat = NumberFormat.getCurrencyInstance();
-
-    DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+   private final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
     public Programmer(String personText) {
         Matcher peopleMat = peoplePat.matcher(personText);
@@ -30,7 +27,7 @@ public class Programmer {
             this.lastName = peopleMat.group("lastName");
             this.firstName = peopleMat.group("firstName");
             this.dob = LocalDate.from(dtFormatter.parse(peopleMat.group("dob")));
-            Matcher progMat = progPat.matcher("details");
+            Matcher progMat = progPat.matcher(peopleMat.group("details"));
             if (progMat.find()) {
                 this.linesOfCOde = Integer.parseInt(progMat.group("locpd"));
                 this.yearsOfExperience = Integer.parseInt(progMat.group("yoe"));
@@ -40,12 +37,12 @@ public class Programmer {
     }
 
     public int getSalary() {
-     return    salary = 3000 + linesOfCOde * yearsOfExperience * iq;
+     return   3000 + linesOfCOde * yearsOfExperience * iq;
     }
 
     @Override
     public String toString() {
-        return String.format("%S, %s: %S",lastName, firstName,salary,moneyFormat.format(getSalary()));
+        return String.format("%S, %s: %S",lastName, firstName,moneyFormat.format(getSalary()));
     }
 }
 

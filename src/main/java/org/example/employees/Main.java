@@ -30,78 +30,33 @@ public class Main {
         Pattern peoplePat = Pattern.compile(peopleRegex);
         Matcher peopleMat = peoplePat.matcher(peopleText);
 
-        String progRegex = "\\w+=(?<locpd>\\w+),\\w+=(?<yoe>\\w+),\\w+=(?<iq>\\w+)";
-        Pattern coderPat = Pattern.compile(progRegex);
-
-        String managerRegex = "\\w+=(?<org>\\w+),\\w+=(?<dr>\\w+)";
-        Pattern managerPat = Pattern.compile(managerRegex);
-
-        String analystRegex = "\\w+=(?<projectCount>\\w+)";
-        Pattern analystPat = Pattern.compile(analystRegex);
-
-        String CEORegex = "\\w+=(?<avgStockPrice>\\w+)";
-        Pattern CEOPat = Pattern.compile(CEORegex);
-
         int totalSalaries = 0;
-        int salary = 0;
 
 
         while (peopleMat.find()) {
             totalSalaries += switch (peopleMat.group("role")) {
                 case "Programmer" -> {
                     Programmer programmer = new Programmer(peopleMat.group());
-                    System.out.println(programmer);
+                    System.out.println(programmer.toString());
                     yield programmer.getSalary();
                 }
 
                 case "Manager" -> {
-                    String details = peopleMat.group("details");
-                    Matcher managerMat = managerPat.matcher(details);
-                    if (managerMat.find()) {
-                        int org = Integer.parseInt(managerMat.group("org"));
-                        int dr = Integer.parseInt(managerMat.group("dr"));
-                        //     System.out.printf("Manager orgSize: %S dr: %s%n", org, dr);
-                        salary = 3500 + org * dr;
-                    } else {
-                        salary = 3500;
-                    }
-                    String lastName = peopleMat.group("lastName");
-                    String firstName = peopleMat.group("firstName");
-                    System.out.printf("%s, %s: %s%n", lastName, firstName, NumberFormat.getCurrencyInstance().format(salary));
-                    yield salary;
+                    Manager manager = new Manager(peopleMat.group());
+                    System.out.println(manager.toString());
+                    yield manager.getSalary();
                 }
 
                 case "Analyst" -> {
-                    String details = peopleMat.group("details");
-                    Matcher analystMat = analystPat.matcher(details);
-                    if (analystMat.find()) {
-                        int projectCount = Integer.parseInt(analystMat.group("projectCount"));
-                        //      System.out.printf("Manager orgSize: %s%n", projectCount);
-                        salary = 2500 + projectCount * 2;
-
-                    } else {
-                        salary = 2500;
-                    }
-                    String lastName = peopleMat.group("lastName");
-                    String firstName = peopleMat.group("firstName");
-                    System.out.printf("%s, %s: %s%n", lastName, firstName, NumberFormat.getCurrencyInstance().format(salary));
-                    yield salary;
+                    Analyst analyst = new Analyst(peopleMat.group());
+                    System.out.println(analyst.toString());
+                    yield analyst.getSalary();
                 }
 
                 case "CEO" -> {
-                    String details = peopleMat.group("details");
-                    Matcher CEOMat = CEOPat.matcher(details);
-                    if (CEOMat.find()) {
-                        int avgStockPrice = Integer.parseInt(CEOMat.group("avgStockPrice"));
-                        //    System.out.printf("CEO avgStockPrice: %s%n", avgStockPrice);
-                        salary = 5000 * avgStockPrice;
-                    } else {
-                        salary = 5000;
-                    }
-                    String lastName = peopleMat.group("lastName");
-                    String firstName = peopleMat.group("firstName");
-                    System.out.printf("%s, %s: %s%n", lastName, firstName, NumberFormat.getCurrencyInstance().format(salary));
-                    yield salary;
+                    CEO ceo = new CEO(peopleMat.group());
+                    System.out.println(ceo);
+                    yield ceo.getSalary();
                 }
 
                 default -> 0;
