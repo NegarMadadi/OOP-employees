@@ -16,6 +16,13 @@ public abstract class Employee {
     protected LocalDate dob;
     protected final Matcher peopleMat;
 
+    protected Employee() {
+        peopleMat = null;
+        lastName = "N/A";
+        firstName = "N/A";
+        dob = null;
+    }
+
     public Employee(String personText) {
         peopleMat = Employee.PEOPLE_PAT.matcher(personText);
         if (peopleMat.find()) {
@@ -34,10 +41,10 @@ public abstract class Employee {
                 case "Manager" -> new Manager(employeeText);
                 case "Analyst" -> new Analyst(employeeText);
                 case "CEO" -> new CEO(employeeText);
-                default -> null;
+                default -> new dummyEmployee();
             };
         } else {
-            return null;
+            return new dummyEmployee();
         }
     }
 
@@ -50,5 +57,12 @@ public abstract class Employee {
 
     public double getBonus() {
         return getSalary() * 1.10;
+    }
+
+    private static final class dummyEmployee extends Employee {
+        @Override
+        public int getSalary() {
+            return 0;
+        }
     }
 }
