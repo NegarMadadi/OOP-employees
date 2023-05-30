@@ -41,7 +41,12 @@ public abstract class Employee {
                 case "Manager" -> new Manager(employeeText);
                 case "Analyst" -> new Analyst(employeeText);
                 case "CEO" -> new CEO(employeeText);
-                default -> new dummyEmployee();
+                default -> new Employee() {
+                    @Override
+                    public int getSalary() {
+                        return 0;
+                    }
+                };
             };
         } else {
             return new dummyEmployee();
@@ -65,4 +70,5 @@ public abstract class Employee {
             return 0;
         }
     }
+
 }
