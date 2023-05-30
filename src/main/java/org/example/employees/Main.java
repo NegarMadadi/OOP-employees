@@ -29,7 +29,7 @@ public class Main {
         Matcher peopleMat = Employee.PEOPLE_PAT.matcher(peopleText);
 
         int totalSalaries = 0;
-        Employee employee = null;
+        Iemployee employee = null;
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());
@@ -41,14 +41,12 @@ public class Main {
         NumberFormat currencyInstant = NumberFormat.getCurrencyInstance();
         System.out.printf("The total payout should be %s%n", currencyInstant.format(totalSalaries));
 
-        Weirdo larry = new Weirdo("David", "Larry", LocalDate.of(1988,07,04));
+        Weirdo larry = new Weirdo("David", "Larry", LocalDate.of(1988, 07, 04));
         System.out.println(larry.firstName());
         System.out.println(larry.lastName());
 
         Weirdo jake = new Weirdo("Snake", "Jake");
         System.out.println(jake.dob());
     }
-
-
 
 }
