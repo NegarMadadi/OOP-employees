@@ -28,8 +28,8 @@ public class Main {
 
         Matcher peopleMat = Employee.PEOPLE_PAT.matcher(peopleText);
 
-        Flyer flyer  = new CEO(peopleText);
-       flyer.fly();
+      Programmer coder = new Programmer("");
+      coder.cook("Hamburger");
 
         int totalSalaries = 0;
         Iemployee employee = null;
