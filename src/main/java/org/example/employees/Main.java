@@ -2,6 +2,8 @@ package org.example.employees;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class Main {
@@ -28,19 +30,32 @@ public class Main {
 
         Matcher peopleMat = Employee.PEOPLE_PAT.matcher(peopleText);
 
-      Programmer coder = new Programmer("");
-      coder.cook("Hamburger");
-
         int totalSalaries = 0;
         Iemployee employee = null;
+        List<Iemployee> employees = new ArrayList<>();
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());
-            System.out.println(employee.toString());
-            totalSalaries += employee.getSalary();
+            employees.add(employee);
 
-
+            if (employee instanceof Programmer) {
+                System.out.println(((Programmer) employee).getIq());
+            } else if (employee instanceof Manager) {
+                System.out.println();
+            } else if (employee instanceof Analyst) {
+                System.out.println();
+            } else if (employee instanceof CEO) {
+                System.out.println();
+            } else {
+                System.out.println("Default output");
+            }
         }
+
+        for (Iemployee worker : employees) {
+            System.out.println(worker.toString());
+            totalSalaries += worker.getSalary();
+        }
+
         NumberFormat currencyInstant = NumberFormat.getCurrencyInstance();
         System.out.printf("The total payout should be %s%n", currencyInstant.format(totalSalaries));
 
@@ -51,5 +66,4 @@ public class Main {
         Weirdo jake = new Weirdo("Snake", "Jake");
         System.out.println(jake.dob());
     }
-
 }

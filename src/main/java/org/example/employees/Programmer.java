@@ -25,5 +25,28 @@ public class Programmer extends Employee {
         return 3000 + linesOfCOde * yearsOfExperience * iq;
     }
 
+    public int getLinesOfCOde() {
+        return linesOfCOde;
+    }
+
+    public void setLinesOfCOde(int linesOfCOde) {
+        this.linesOfCOde = linesOfCOde;
+    }
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public int getIq() {
+        return iq;
+    }
+
+    public void setIq(int iq) {
+        this.iq = iq;
+    }
 }
 
