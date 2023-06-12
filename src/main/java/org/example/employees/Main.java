@@ -35,10 +35,10 @@ public class Main {
 
         int totalSalaries = 0;
         Iemployee employee = null;
-        List<Iemployee> employees = new LinkedList<>();
+        List<Iemployee> employees = new ArrayList<>();
 
         while (peopleMat.find()) {
-            employee = Employee.createEmployee(peopleMat.group());
+            employee = Employee.createEmployee(peopleMat.group(16));
             employees.add(employee);
 
             if (employee instanceof Programmer) {
@@ -57,8 +57,9 @@ public class Main {
         employees.remove(1);
         employees.remove(2);
 
-        List<String> undesirables = List.of("Wilma5", "Barney4", "Fred2");
 
+
+        List<String> undesirables = new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
         removeUndesirables(employees, undesirables);
 
         for (Iemployee worker : employees) {
