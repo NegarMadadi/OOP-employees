@@ -49,17 +49,17 @@ public class Main {
                 System.out.println();
             } else if (employee instanceof CEO) {
                 System.out.println();
-            } else {
                 System.out.println("Default output");
             }
         }
 
-        List<String> removalNames = new ArrayList<>();
-        removalNames.add("Wilma5");
-        removalNames.add("Barney4");
-        removalNames.add("Fred2");
+        employees.remove(0);
+        employees.remove(1);
+        employees.remove(2);
 
-        removeUndesirables(employees, removalNames);
+        List<String> undesirables = List.of("Wilma5", "Barney4", "Fred2");
+
+        removeUndesirables(employees, undesirables);
 
         for (Iemployee worker : employees) {
             System.out.println(worker.toString());
