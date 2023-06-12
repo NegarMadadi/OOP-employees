@@ -1,8 +1,10 @@
 package org.example.employees;
 
+import javax.swing.text.html.HTMLDocument;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -57,13 +59,9 @@ public class Main {
         removalNames.add("Barney4");
         removalNames.add("Fred2");
 
+        removeUndesirables(employees, removalNames);
+
         for (Iemployee worker : employees) {
-            if (worker instanceof Employee) {
-                Employee tempWorker = (Employee) worker;
-                if (removalNames.contains(tempWorker.firstName)) {
-                    employees.remove(worker);
-                }
-            }
             System.out.println(worker.toString());
             totalSalaries += worker.getSalary();
         }
@@ -77,5 +75,16 @@ public class Main {
 
         Weirdo jake = new Weirdo("Snake", "Jake");
         System.out.println(jake.dob());
+    }
+
+    private static void removeUndesirables(List<Iemployee> employees, List<String> removalNames) {
+        for (Iterator<Iemployee> it = employees.iterator(); it.hasNext(); ) {
+            Iemployee worker = it.next();
+            if (worker instanceof Employee tempWorker) {
+                if (removalNames.contains(tempWorker.firstName)) {
+                    it.remove();
+                }
+            }
+        }
     }
 }
