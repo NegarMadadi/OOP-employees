@@ -3,6 +3,7 @@ package org.example.employees;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -32,7 +33,7 @@ public class Main {
 
         int totalSalaries = 0;
         Iemployee employee = null;
-        List<Iemployee> employees = new ArrayList<>();
+        List<Iemployee> employees = new LinkedList<>();
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());
@@ -51,7 +52,18 @@ public class Main {
             }
         }
 
+        List<String> removalNames = new ArrayList<>();
+        removalNames.add("Wilma5");
+        removalNames.add("Barney4");
+        removalNames.add("Fred2");
+
         for (Iemployee worker : employees) {
+            if (worker instanceof Employee) {
+                Employee tempWorker = (Employee) worker;
+                if (removalNames.contains(tempWorker.firstName)) {
+                    employees.remove(worker);
+                }
+            }
             System.out.println(worker.toString());
             totalSalaries += worker.getSalary();
         }
