@@ -1,11 +1,9 @@
 package org.example.employees;
 
-import javax.swing.text.html.HTMLDocument;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -35,10 +33,10 @@ public class Main {
 
         int totalSalaries = 0;
         Iemployee employee = null;
-        List<Iemployee> employees = new ArrayList<>();
+        List<Iemployee> employees = new ArrayList<>(16);
 
         while (peopleMat.find()) {
-            employee = Employee.createEmployee(peopleMat.group(16));
+            employee = Employee.createEmployee(peopleMat.group());
             employees.add(employee);
 
             if (employee instanceof Programmer) {
@@ -53,11 +51,13 @@ public class Main {
             }
         }
 
-        employees.remove(0);
-        employees.remove(1);
-        employees.remove(2);
+        Iemployee myEmp = employees.get(5);
+        System.out.println(employees.contains(myEmp));
 
+        Iemployee employee1 = Employee.createEmployee("Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}");
+        System.out.println(employees.contains(employee1));
 
+        System.out.println(myEmp.equals(employee1));
 
         List<String> undesirables = new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
         removeUndesirables(employees, undesirables);
@@ -66,6 +66,7 @@ public class Main {
             System.out.println(worker.toString());
             totalSalaries += worker.getSalary();
         }
+
 
         NumberFormat currencyInstant = NumberFormat.getCurrencyInstance();
         System.out.printf("The total payout should be %s%n", currencyInstant.format(totalSalaries));
