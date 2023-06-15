@@ -57,6 +57,14 @@ public class Main {
         Iemployee employee1 = Employee.createEmployee("Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}");
         System.out.println(employees.contains(employee1));
 
+        employees.sort((o1, o2) -> {
+            if (o1 instanceof Employee emp1 && o2 instanceof Employee emp2) {
+                int lNameResult = emp1.lastName.compareTo(emp2.lastName);
+                return lNameResult != 0 ? lNameResult : Integer.compare(emp1.getSalary(),emp2.getSalary());
+            }
+            return 0;
+        });
+
         System.out.println(myEmp.equals(employee1));
 
         List<String> undesirables = new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
@@ -71,7 +79,7 @@ public class Main {
         NumberFormat currencyInstant = NumberFormat.getCurrencyInstance();
         System.out.printf("The total payout should be %s%n", currencyInstant.format(totalSalaries));
 
-        Weirdo larry = new Weirdo("David", "Larry", LocalDate.of(1988, 07, 04));
+        Weirdo larry = new Weirdo("David", "Larry", LocalDate.of(1988, 7, 4));
         System.out.println(larry.firstName());
         System.out.println(larry.lastName());
 
