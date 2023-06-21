@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Employee implements Iemployee , Chef{
+public abstract class Employee implements IEmployee{
     protected final NumberFormat moneyFormat = NumberFormat.getCurrencyInstance();
     protected final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
     private static final String PEOPLE_REGEX = "(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s(?<role>\\w+)(?:,\\s*\\{(?<details>.*)\\})?\\n";
@@ -33,7 +33,7 @@ public abstract class Employee implements Iemployee , Chef{
         }
     }
 
-    public static final Iemployee createEmployee(String employeeText) {
+    public static final IEmployee createEmployee(String employeeText) {
         Matcher peopleMat = Employee.PEOPLE_PAT.matcher(employeeText);
         if (peopleMat.find()) {
             return switch (peopleMat.group("role")) {
@@ -42,10 +42,10 @@ public abstract class Employee implements Iemployee , Chef{
                 case "Manager" -> new Manager(employeeText);
                 case "Analyst" -> new Analyst(employeeText);
                 case "CEO" -> new CEO(employeeText);
-                default -> () -> 0;
+                default -> new DummyEmployee();
             };
         } else {
-            return  () -> 0;
+            return new DummyEmployee();
         }
     }
 
@@ -70,5 +70,21 @@ public abstract class Employee implements Iemployee , Chef{
 
     public double getBonus() {
         return getSalary() * 1.10;
+    }
+
+    private static final class DummyEmployee extends Employee {
+        @Override
+        public int getSalary() {
+            return 0;
+        }
+    }
+
+    @Override
+    public int compareTo(IEmployee o) {
+        Employee other = (Employee) o ;
+        return this.lastName.compareTo(other.lastName);
+    }
+
+    public record Jumper(String firstName, String lastName) {
     }
 }

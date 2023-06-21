@@ -2,9 +2,7 @@ package org.example.employees;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 
 public class Main {
@@ -15,8 +13,8 @@ public class Main {
                 Flinstone2, Fred2, 1/1/1900, Programmer, {locpd=1300,yoe=14,iq=100}
                 Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2300,yoe=8,iq=105}
                 Flinston4, Fred4, 1/1/1900, Programmer, {locpd=1630,yoe=3,iq=115}
-                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}
-                Rubble, Barney, 2/2/1905, Manager, {orgSize=300,dr=10}
+                Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=w
+                nager, {orgSize=300,dr=10}
                 Rubble2, Barney2, 2/2/1905, Manager, {orgSize=100,dr=4}
                 Rubble3, Barney3, 2/2/1905, Manager, {orgSize=200,dr=2}
                 Rubble4, Barney4, 2/2/1905, Manager, {orgSize=500,dr=8}
@@ -32,8 +30,8 @@ public class Main {
         Matcher peopleMat = Employee.PEOPLE_PAT.matcher(peopleText);
 
         int totalSalaries = 0;
-        Iemployee employee = null;
-        List<Iemployee> employees = new ArrayList<>(16);
+        IEmployee employee = null;
+        List<IEmployee> employees = new ArrayList<>(16);
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());
@@ -51,26 +49,40 @@ public class Main {
             }
         }
 
-        Iemployee myEmp = employees.get(5);
+        IEmployee myEmp = employees.get(5);
         System.out.println(employees.contains(myEmp));
 
-        Iemployee employee1 = Employee.createEmployee("Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}");
+        IEmployee employee1 = Employee.createEmployee("Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}");
         System.out.println(employees.contains(employee1));
+        System.out.println(myEmp.equals(employee1));
 
-        employees.sort((o1, o2) -> {
+        Collections.shuffle(employees);
+
+        Collections.sort(employees, (o1, o2) -> {
             if (o1 instanceof Employee emp1 && o2 instanceof Employee emp2) {
                 int lNameResult = emp1.lastName.compareTo(emp2.lastName);
-                return lNameResult != 0 ? lNameResult : Integer.compare(emp1.getSalary(),emp2.getSalary());
+                return lNameResult != 0 ? lNameResult : Integer.compare(emp1.getSalary(), emp2.getSalary());
             }
             return 0;
         });
 
+//        employees.sort((o1, o2) -> {
+//            if (o1 instanceof Employee emp1 && o2 instanceof Employee emp2) {
+//                int lNameResult = emp1.lastName.compareTo(emp2.lastName);
+//                return lNameResult != 0 ? lNameResult : Integer.compare(emp1.getSalary(),emp2.getSalary());
+//            }
+//            return 0;
+//        });
+
         System.out.println(myEmp.equals(employee1));
 
         List<String> undesirables = new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
+       undesirables.sort(Comparator.naturalOrder());
+        System.out.println(undesirables);
+
         removeUndesirables(employees, undesirables);
 
-        for (Iemployee worker : employees) {
+        for (IEmployee worker : employees) {
             System.out.println(worker.toString());
             totalSalaries += worker.getSalary();
         }
@@ -87,9 +99,9 @@ public class Main {
         System.out.println(jake.dob());
     }
 
-    private static void removeUndesirables(List<Iemployee> employees, List<String> removalNames) {
-        for (Iterator<Iemployee> it = employees.iterator(); it.hasNext(); ) {
-            Iemployee worker = it.next();
+    private static void removeUndesirables(List<IEmployee> employees, List<String> removalNames) {
+        for (Iterator<IEmployee> it = employees.iterator(); it.hasNext(); ) {
+            IEmployee worker = it.next();
             if (worker instanceof Employee tempWorker) {
                 if (removalNames.contains(tempWorker.firstName)) {
                     it.remove();

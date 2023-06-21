@@ -3,7 +3,7 @@ package org.example.employees;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CEO extends Employee implements Flyer{
+public class CEO extends Employee {
     private int avgStockPrice = 0;
     private Pilot pilot = new Pilot(1000, true);
 
@@ -42,4 +42,5 @@ public class CEO extends Employee implements Flyer{
     public void fly() {
         pilot.fly();
     }
+
 }

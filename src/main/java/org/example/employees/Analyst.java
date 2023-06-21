@@ -3,7 +3,7 @@ package org.example.employees;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Analyst extends Employee{
+public class Analyst extends Employee {
     private int projectCount = 0;
 
     String analystRegex = "\\w+=(?<projectCount>\\w+)";
@@ -19,6 +19,11 @@ public class Analyst extends Employee{
 
     public int getSalary() {
     return 2500 + projectCount * 2;
+    }
+
+    @Override
+    public int compareTo(IEmployee o) {
+        return 0;
     }
 
 }
