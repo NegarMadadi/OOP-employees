@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Employee implements IEmployee{
+public abstract class Employee implements IEmployee {
     protected final NumberFormat moneyFormat = NumberFormat.getCurrencyInstance();
     protected final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
     private static final String PEOPLE_REGEX = "(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s(?<role>\\w+)(?:,\\s*\\{(?<details>.*)\\})?\\n";
@@ -81,7 +81,7 @@ public abstract class Employee implements IEmployee{
 
     @Override
     public int compareTo(IEmployee o) {
-        Employee other = (Employee) o ;
+        Employee other = (Employee) o;
         return this.lastName.compareTo(other.lastName);
     }
 
