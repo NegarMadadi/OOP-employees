@@ -35,7 +35,7 @@ public class Main {
 
         int totalSalaries = 0;
         IEmployee employee = null;
-        Set<IEmployee> employees = new HashSet<>();
+        Set<IEmployee> employees = new LinkedHashSet<>();
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());

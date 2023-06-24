@@ -60,7 +60,9 @@ public abstract class Employee implements IEmployee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Employee employee)) return false;
-        return Objects.equals(lastName, employee.lastName) && Objects.equals(firstName, employee.firstName) && Objects.equals(dob, employee.dob);
+        return lastName.equals(employee.lastName) &&
+                firstName.equals(employee.firstName) &&
+                dob.equals(employee.dob);
     }
 
     @Override
