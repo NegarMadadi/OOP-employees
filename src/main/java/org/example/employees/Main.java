@@ -35,7 +35,7 @@ public class Main {
 
         int totalSalaries = 0;
         IEmployee employee = null;
-        Set<IEmployee> employees = new LinkedHashSet<>();
+        Set<IEmployee> employees = new TreeSet<>((e1, e2) -> (Integer.compare(e1.getSalary(), e2.getSalary())));
 
         while (peopleMat.find()) {
             employee = Employee.createEmployee(peopleMat.group());
